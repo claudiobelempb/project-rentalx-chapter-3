@@ -5,9 +5,9 @@ class IndexCategoryController {
 
   constructor(private indexCategoryUserCase: IndexCategoryUserCase){}
 
-  handle(request: Request, response: Response ): Response {
+  public async handle(request: Request, response: Response ): Promise<Response> {
 
-    const categories = this.indexCategoryUserCase.execute();
+    const categories = await this.indexCategoryUserCase.execute();
 
     return response.json(categories);
 

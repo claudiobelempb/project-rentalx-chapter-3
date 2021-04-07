@@ -1,58 +1,55 @@
-import { Category }  from '../../model/Category';
-import { ICategoriesRepository, ICategoriesRepositoryDTO } from '../ICategoriesRepository';
+import { EntityRepository, getRepository, Repository } from "typeorm";
+import { Category } from "../../entities/Category";
+import {
+  ICategoriesRepository,
+  ICategoriesRepositoryDTO,
+} from "../ICategoriesRepository";
 
+@EntityRepository(Category)
 class CategoriesRepository implements ICategoriesRepository {
-  private categories: Category[];
+  private repository: Repository<Category>;
 
-  private static INSTANCE: CategoriesRepository;
+  //private static INSTANCE: CategoriesRepository;
 
-  private constructor(){
-    this.categories = [];
+  constructor() {
+    this.repository = getRepository(Category);
   }
 
-  public static getInstance(): CategoriesRepository {
-    if(!CategoriesRepository.INSTANCE) {
-      CategoriesRepository.INSTANCE = new CategoriesRepository();
-    }
-    return CategoriesRepository.INSTANCE;
+  // public static getInstance(): CategoriesRepository {
+  //   if (!CategoriesRepository.INSTANCE) {
+  //     CategoriesRepository.INSTANCE = new CategoriesRepository();
+  //   }
+  //   return CategoriesRepository.INSTANCE;
+  // }
+
+  public async index(): Promise<Category[]> {
+    const categories = await this.repository.find();
+    return categories;
   }
 
-  index(): Category[]{
-    return this.categories;
-  }
-
-  show(id: string): Category[] | undefined {
-    const category = this.categories.filter(categoryId => categoryId.id === id);
+  public async show(id: string): Promise<Category | undefined> {
+    const category = await this.repository.findOne(id);
     return category;
   }
 
-  create({ name, description }: ICategoriesRepositoryDTO): void {
+  public async create({
+    name,
+    description,
+  }: ICategoriesRepositoryDTO): Promise<void> {
+    const category = this.repository.create({ name, description });
 
-    const category = new Category();
-
-    Object.assign(category, {
-      name,
-      description,
-      created_at: new Date(),
-      updated_at: new Date()
-    });
-
-    this.categories.push(category);
-
+    await this.repository.save(category);
   }
 
-  findByName(name: string): Category {
-
-    const categoryNameExists = this.categories.find(categoryName => categoryName.name === name);
+  public async findByName(name: string): Promise<Category> {
+    const categoryNameExists = await this.repository.findOne({ name });
     return categoryNameExists;
-    
   }
 
-  findById(id: string): Category {
-    const categoryIdExists = this.categories.find(categoryId => categoryId.id === id);
+  public async findById(id: string): Promise<Category> {
+    const categoryIdExists = await this.repository.findOne({ id });
     return categoryIdExists;
   }
-
 }
 
 export { CategoriesRepository };

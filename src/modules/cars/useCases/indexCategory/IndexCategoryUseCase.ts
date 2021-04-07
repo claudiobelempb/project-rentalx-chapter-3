@@ -1,13 +1,13 @@
-import { Category } from '../../model/Category';
+import { Category } from '../../entities/Category';
 import { ICategoriesRepository } from '../../repositories/ICategoriesRepository';
 
 class IndexCategoryUserCase {
 
   constructor(private categoriesRepository: ICategoriesRepository){};
 
-  execute(): Category[] | undefined {
+  public async execute(): Promise<Category[] | undefined> {
 
-    const categories = this.categoriesRepository.index();
+    const categories = await this.categoriesRepository.index();
 
     return categories;
 
