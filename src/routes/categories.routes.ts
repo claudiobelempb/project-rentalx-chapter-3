@@ -1,40 +1,26 @@
-import multer from 'multer';
+import multer from "multer";
+import { Router } from "express";
 
-import { Router } from 'express';
-import { CategoriesRepository } from '../modules/cars/repositories/implementations/CategoriesRepository';
-import { ShowCategoryService } from '../modules/cars/services/ShowCategoryService';
-import createCategoryController from '../modules/cars/useCases/createCategory';
-import indexCategoryController from '../modules/cars/useCases/indexCategory';
-import importCategoryController from '../modules/cars/useCases/importCategory';
+import { IndexCategoryController } from "../modules/cars/useCases/indexCategory/IndexCategoryController";
+import { ShowCategoryController } from '../modules/cars/useCases/showCategory/ShowCategoryController';
+import { CreateCategoryController } from "../modules/cars/useCases/createCategory/CreateCategoryController";
+import { ImportCategoryController } from '../modules/cars/useCases/importCategory/importCategoryController';
 
 const categoriesRoutes = Router();
 
 const upload = multer({
-  dest: './tmp',
+  dest: "./tmp",
 });
 
-categoriesRoutes.get('/', (request, response) => {
-  return indexCategoryController().handle(request, response);
-});
+const indexCategoryController = new IndexCategoryController();
+const showCategoryController = new ShowCategoryController();
+const createCategoryController = new CreateCategoryController();
+const importCategoryController = new ImportCategoryController();
 
-categoriesRoutes.get('/:id', (request, response) => {
-  
-  // const { id } = request.params;
 
-  // const showCategoryService = new ShowCategoryService(categoriesRepository);
-
-  // const category = showCategoryService.execute(id);
-
-  // return response.json(category);
-
-});
-
-categoriesRoutes.post('/', (request, response) => {
-  return createCategoryController().handle(request, response);
-}); 
-
-categoriesRoutes.post('/import', upload.single('file'), (request, response) => {
-  return importCategoryController().handle(request, response);
-});
+categoriesRoutes.get("/", indexCategoryController.handle);
+categoriesRoutes.get("/:id", showCategoryController.handle);
+categoriesRoutes.post("/", createCategoryController.handle);
+categoriesRoutes.post("/import", upload.single("file"), importCategoryController.handle);
 
 export { categoriesRoutes };

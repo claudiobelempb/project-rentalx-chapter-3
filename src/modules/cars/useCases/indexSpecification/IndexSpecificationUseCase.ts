@@ -1,14 +1,19 @@
+import { inject, injectable } from 'tsyringe';
 import { Specification } from '../../entities/Specification';
 
 import { SpecificationsRepository } from '../../repositories/implementations/SpecificationsRepository';
 
+@injectable()
 class IndexSpecificationUseCase {
 
-  constructor(private specificationsRepository: SpecificationsRepository){}
+  constructor(
+    @inject("SpecificationsRepository")
+    private specificationsRepository: SpecificationsRepository
+  ){}
 
-  execute(): Specification[] | undefined {
+  public async execute(): Promise<Specification[] | undefined > {
 
-    const specification = this.specificationsRepository.index();
+    const specification = await this.specificationsRepository.index();
 
     return specification;
 

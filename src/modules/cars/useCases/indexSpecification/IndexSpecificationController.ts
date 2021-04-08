@@ -1,17 +1,18 @@
-import { Request, Response } from 'express';
-import { IndexSpecificationUseCase } from './IndexSpecificationUseCase';
+import { Request, Response } from "express";
+import { container } from "tsyringe";
+
+import { IndexSpecificationUseCase } from "./IndexSpecificationUseCase";
 
 class IndexSpecificationController {
+  public async handle(request: Request, response: Response): Promise<Response> {
+    const indexSpecificationUseCase = container.resolve(
+      IndexSpecificationUseCase
+    );
 
-  constructor(private indexSpecificationUseCase: IndexSpecificationUseCase){};
-
-  handle( request: Request, response: Response ): Response {
-
-    const specification = this.indexSpecificationUseCase.execute();
+    const specification = await indexSpecificationUseCase.execute();
 
     return response.json(specification);
   }
-
 }
 
 export { IndexSpecificationController };

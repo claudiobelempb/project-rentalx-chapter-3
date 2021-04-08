@@ -1,16 +1,19 @@
-import { Category } from '../../entities/Category';
-import { ICategoriesRepository } from '../../repositories/ICategoriesRepository';
+import { inject, injectable } from "tsyringe";
 
+import { ICategoriesRepository } from "../../repositories/ICategoriesRepository";
+import { Category } from "../../entities/Category";
+
+@injectable()
 class IndexCategoryUserCase {
-
-  constructor(private categoriesRepository: ICategoriesRepository){};
+  constructor(
+    @inject("CategoriesRepository")
+    private categoryRepository: ICategoriesRepository
+  ) {}
 
   public async execute(): Promise<Category[] | undefined> {
-
-    const categories = await this.categoriesRepository.index();
+    const categories = await this.categoryRepository.index();
 
     return categories;
-
   }
 }
 

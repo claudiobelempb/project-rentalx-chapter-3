@@ -1,58 +1,52 @@
-import { Specification } from '../../entities/Specification';
-import { ISpecificationsRepository, ISpecificationsDTO } from '../../repositories/ISpecificationsRepository';
+import { EntityRepository, getRepository, Repository } from "typeorm";
 
+import { Specification } from "../../entities/Specification";
+import {
+  ISpecificationsRepository,
+  ISpecificationsDTO,
+} from "../../repositories/ISpecificationsRepository";
+
+@EntityRepository(Specification)
 class SpecificationsRepository implements ISpecificationsRepository {
+  private repository: Repository<Specification>;
 
-  private specifications: Specification[];
-
-  private static INSTANCE: SpecificationsRepository;
-
-  constructor(){
-    this.specifications = [];
+  constructor() {
+    this.repository = getRepository(Specification);
   }
 
-  public static getInstance(): SpecificationsRepository {
-    if(!SpecificationsRepository.INSTANCE) {
-      SpecificationsRepository.INSTANCE = new SpecificationsRepository();
-    }
-
-    return SpecificationsRepository.INSTANCE;
-  }
-
-  index(): Specification[] {
-    return this.specifications;
-  }
-
-  show(id: string): Specification[] | undefined {
-    const specification = this.specifications.filter(specification => specification.id === id);
+  public async index(): Promise<Specification[]> {
+    const specification = await this.repository.find();
     return specification;
   }
 
-  create({ name, description }: ISpecificationsDTO): void {
-    
-    const specification = new Specification();
+  public async show(id: string): Promise<Specification | undefined> {
+    const specification = await this.repository.findOne({id});
+    return specification;
+  }
 
-    Object.assign(specification, {
-      name,
+  public async create({
+    name,
+    description,
+  }: ISpecificationsDTO): Promise<void> {
+  
+    const specification = this.repository.create({
+      name, 
       description,
-      created_at: new Date(),
-      updated_at: new Date()
-    });
+    })
 
-    this.specifications.push(specification);
+    await this.repository.save(specification);
 
   }
 
-  findByName(name: string): ISpecificationsDTO {
-    const specificationNameExists = this.specifications.find(specification => specification.name === name);
+  public async findByName(name: string): Promise<ISpecificationsDTO> {
+    const specificationNameExists = this.repository.findOne({name});
     return specificationNameExists;
   }
 
-  findById(id: string): Specification {
-    const specificationIdExists = this.specifications.find(specification => specification.id === id);
+  public async findById(id: string): Promise<Specification> {
+    const specificationIdExists = this.repository.findOne({id});
     return specificationIdExists;
   }
-
 }
 
 export { SpecificationsRepository };
