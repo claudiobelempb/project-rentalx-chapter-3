@@ -16,9 +16,6 @@ class User {
   name: string;
 
   @Column()
-  username: string;
-
-  @Column()
   email: string;
 
   @Column()
@@ -38,7 +35,6 @@ class User {
 
   constructor() {
     if (!this.id) this.id = uuid();
-    if (!this.isAdmin) this.isAdmin = false;
   }
 }
 
