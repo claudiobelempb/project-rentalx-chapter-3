@@ -17,6 +17,11 @@ class UsersRepository implements IUsersRepository {
     return users;
   }
 
+  public async show(id: string): Promise<User> {
+    const user = await this.repository.findOne({ id });
+    return user;
+  }
+
   public async create({
     name,
     email,
@@ -33,9 +38,39 @@ class UsersRepository implements IUsersRepository {
     await this.repository.save(user);
   }
 
+  public async update({
+    id,
+    name,
+    email,
+    password,
+    driver_license,
+  }: User): Promise<ICreateUserDTO> {
+    const user = {
+      id,
+      name,
+      email,
+      password,
+      driver_license,
+    };
+
+    await this.repository.save(user);
+
+    return user;
+  }
+
+  public async delete(id: string): Promise<void> {
+    const user = await this.repository.findOne({ id });
+    await this.repository.remove(user);
+  }
+
   public async findByEmail(email: string): Promise<User> {
     const userEmailExists = await this.repository.findOne({ email });
     return userEmailExists;
+  }
+
+  public async findById(id: string): Promise<User> {
+    const userIdExists = await this.repository.findOne({ id });
+    return userIdExists;
   }
 }
 
