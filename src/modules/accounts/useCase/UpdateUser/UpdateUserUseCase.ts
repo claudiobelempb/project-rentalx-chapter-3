@@ -1,4 +1,5 @@
 import { injectable, inject } from "tsyringe";
+import { hash } from "bcryptjs";
 
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 
@@ -30,11 +31,13 @@ class UpdateUserUseCase {
       throw new Error("User id not found.");
     }
 
+    const passwordHash = await hash(password, 8);
+
     const userReturn: IRequest = {
       id,
       name,
       email,
-      password,
+      password: passwordHash,
       driver_license,
     };
 
