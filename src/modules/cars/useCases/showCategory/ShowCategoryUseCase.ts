@@ -2,6 +2,7 @@ import { inject, injectable } from "tsyringe";
 
 import { ICategoriesRepository } from "../../repositories/ICategoriesRepository";
 import { Category } from "../../entities/Category";
+import { AppError } from "../../../../shared/errors/AppError";
 
 interface IRequest {
   id: string;
@@ -18,7 +19,7 @@ class ShowCategoryUseCase {
     const category = await this.categoryRepository.findById(id);
 
     if (!category) {
-      throw new Error("Category id not found");
+      throw new AppError("Category id not found");
     }
 
     return category;

@@ -1,7 +1,7 @@
 import { injectable, inject } from "tsyringe";
 
 import { IUsersRepository } from "../../repositories/IUsersRepository";
-import { User } from "../../entities/User";
+import { AppError } from "../../../../shared/errors/AppError";
 
 interface IRequest {
   id: string;
@@ -29,7 +29,7 @@ class ShowUserUseCase {
     const user = await this.usersRepository.findById(id);
 
     if (!user) {
-      throw new Error("User id not found.");
+      throw new AppError("User id not found.");
     }
 
     const userReturn: IResponse = {
