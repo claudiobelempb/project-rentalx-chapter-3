@@ -23,16 +23,20 @@ class UsersRepository implements IUsersRepository {
   }
 
   public async create({
+    id,
     name,
     email,
     password,
     driver_license,
+    avatar,
   }: ICreateUserDTO): Promise<void> {
     const user = this.repository.create({
+      id,
       name,
       email,
       password,
       driver_license,
+      avatar,
     });
 
     await this.repository.save(user);
