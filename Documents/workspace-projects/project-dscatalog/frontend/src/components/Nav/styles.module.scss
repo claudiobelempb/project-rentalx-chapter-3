@@ -1,0 +1,16 @@
+.navbar {
+  justify-content: flex-end;
+
+  & a {
+    color: var(--bs-white);
+    font-size: 1.12rem;
+
+    &:hover {
+      color: unset;
+    }
+  }
+
+  &_active {
+    font-weight: 700;
+  }
+}

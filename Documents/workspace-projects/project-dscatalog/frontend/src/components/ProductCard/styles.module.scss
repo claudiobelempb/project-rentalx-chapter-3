@@ -1,0 +1,25 @@
+.product_card__container {
+  & a:hover {
+    background-color: unset;
+  }
+
+  & img:hover {
+    background-color: rebeccapurple;
+  }
+
+  &_img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // width: 372px;
+    height: 172px;
+
+    border-bottom: 1px solid var(--bs-gray-light);
+  }
+
+  & h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--bs-gray);
+  }
+}

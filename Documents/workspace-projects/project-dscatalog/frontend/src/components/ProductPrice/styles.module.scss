@@ -1,0 +1,20 @@
+.product__container_price {
+  // display: flex;
+  & span {
+    color: var(--bs-gray-500);
+    font-size: 1rem;
+    margin-right: 1rem;
+    // vertical-align: top;
+  }
+
+  & strong {
+    color: var(--bs-primary);
+    font-size: 1.8rem;
+
+    & span {
+      color: var(--bs-primary);
+      font-size: 1rem;
+      // vertical-align: bottom;
+    }
+  }
+}
