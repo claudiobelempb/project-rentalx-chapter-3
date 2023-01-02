@@ -15,9 +15,17 @@ import { TypeDefault } from '../../../assets/themes/TypeDefault';
 export const Container = styled.fieldset<TypeDefault>`
   ${({ theme, ...props }) => css`
   display: flex;
-  align-items: flex-end;
-  align-items: center;
-  flex-grow: 1;
+
+  ${
+    props.flexDefault
+      ? flexDefault.flexDefault(props.flexDefault)
+      : theme.flexDefault({
+          flexDefault: 'flex',
+          flexAlignItemsDefault: 'center',
+          flexGrowDefault: 1,
+        })
+  }
+
   width: 100%;
   gap: 1rem;
   border: none;
