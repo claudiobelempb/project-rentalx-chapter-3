@@ -1,0 +1,5 @@
+package br.com.surb.SpringDesignPatterns.shared.client;
+
+public interface AddressAPI {
+
+}

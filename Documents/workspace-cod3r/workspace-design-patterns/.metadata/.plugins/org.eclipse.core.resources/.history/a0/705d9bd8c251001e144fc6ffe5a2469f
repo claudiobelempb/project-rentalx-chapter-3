@@ -1,0 +1,14 @@
+package br.com.surb.SpringDesignPatterns.modules.user.useCase.findAllWithCovidInfo;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import lombok.AllArgsConstructor;
+
+@RestController
+@AllArgsConstructor
+@RequestMapping("/users")
+public class findAllWithCovidInfoResource {
+
+	private findAllWithCovidInfoService 
+}
